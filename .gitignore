@@ -55,3 +55,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.pot
+*.pyc
+
+# Sphinx documentation
+docs/_build/
+migrate/
