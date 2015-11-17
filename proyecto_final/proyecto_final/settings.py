@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'drinking'
 
 )
@@ -73,7 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'proyecto_final.wsgi.application'
 
-AUTH_PROFILE_MODULE = 'drinking.Profile'
+SOCIAL_AUTH_USER_MODEL = 'drinking.Profile'
 
 
 # Database
@@ -86,6 +87,14 @@ DATABASES = {
     }
 }
 
+SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.yahoo.YahooOpenId',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
