@@ -1,9 +1,7 @@
-# ingweb2
-Trabajo 2 de ingeniería web
+# Drinking
 
-Instalar
-´´´
+## Instalar aplicaciones necesarias
+```python
 pip install django_admin_bootstrapped
 pip install python-social-auth
-
-´´´
+```
