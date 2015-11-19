@@ -115,7 +115,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 STATIC_URL = '/static/'
 
-SOCIAL_AUTH_USER_MODEL = 'drinking.Profile'
+AUTH_PROFILE_MODEL = 'drinking.Profile'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 AUTHENTICATION_BACKENDS = (

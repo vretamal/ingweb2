@@ -5,7 +5,7 @@
 {% block body %}
     {% if user.is_authenticated  %}
         <h3>Bienvenid@ {{ user.first_name }}</h3>
-        <a href="{% url 'auth:logout' %}?next={{ request.path }} class="btn" ">Logout</a>
+        <a href="{% url 'auth:logout' %}?next={{ request.path }}"" class="btn btn-danger">Cerrar Sesión</a>
     {% else %}
         <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-facebook"><i class="icon-facebook-official"></i> Identificarse con Facebook</a>
         <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-google"><i class="icon-google-1"></i> Identificarse con Google</a>
