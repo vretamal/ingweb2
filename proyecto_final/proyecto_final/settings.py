@@ -119,20 +119,42 @@ SOCIAL_AUTH_USER_MODEL = 'drinking.Profile'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookAppOAuth2'
-    'social.backends.facebook.FacebookOAuth2'
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend'
 )
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+    # 'profiles.pipeline.user_details'
+)
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
 SOCIAL_AUTH_FACEBOOK_KEY = '1708146509421451'
 SOCIAL_AUTH_FACEBOOK_SECRET = '31c7c12f429d7c0a401f1f6f59274ee6'
+
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'locale': 'ru_RU',
   'fields': 'id, name, email, age_range'
 }
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '132106099279-3tfp50job0bf6odvqprt06odpkt1n37e.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '6w178dSh6tEFB__QmgG7x009'
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+
+
+
+LOGIN_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'

@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.views import generic
+from django.template.context import RequestContext
 
 
 class HomeView(generic.TemplateView):
