@@ -7,7 +7,8 @@ import re
 class Profile(models.Model):
     def __unicode__(self):
         return str(self.user)
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     frase = models.CharField(max_length = 160)
     ubicacion = models.CharField(max_length = 50)
     avatar = models.CharField(max_length = 256)
+    gender = models.CharField(max_length = 20, null=True)
