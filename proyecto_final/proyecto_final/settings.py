@@ -117,6 +117,7 @@ STATIC_URL = '/static/'
 
 AUTH_PROFILE_MODEL = 'drinking.Profile'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_ALWAYS_ASSOCIATE = True
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
@@ -136,7 +137,8 @@ SOCIAL_AUTH_PIPELINE = (
     'drinking.utils.save_profile',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details'
+    'social.pipeline.user.user_details',
+    'drinking.utils.get_profile_picture'
     # 'profiles.pipeline.user_details'
 )
 
@@ -145,16 +147,20 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 SOCIAL_AUTH_FACEBOOK_KEY = '1708146509421451'
 SOCIAL_AUTH_FACEBOOK_SECRET = '31c7c12f429d7c0a401f1f6f59274ee6'
 
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'public_profile']
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'locale': 'ru_RU',
-  'fields': 'id, name, email, age_range'
+  'fields': 'id, name, email, age_range, gender, link',
 }
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '132106099279-3tfp50job0bf6odvqprt06odpkt1n37e.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '6w178dSh6tEFB__QmgG7x009'
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 
 

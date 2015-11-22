@@ -5,8 +5,6 @@ import re
 
 # Create your models here.
 class Profile(models.Model):
-    def __unicode__(self):
-        return str(self.user)
     user = models.OneToOneField(User)
     frase = models.CharField(max_length = 160)
     ubicacion = models.CharField(max_length = 50)
