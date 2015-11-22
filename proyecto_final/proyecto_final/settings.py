@@ -135,10 +135,10 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.create_user',
     'drinking.utils.create_profile',
     'drinking.utils.save_profile',
+    'drinking.utils.get_profile_picture',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details',
-    'drinking.utils.get_profile_picture'
+    'social.pipeline.user.user_details'
     # 'profiles.pipeline.user_details'
 )
 

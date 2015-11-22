@@ -4,7 +4,7 @@
 
 {% block body %}
     {% if user.is_authenticated  %}
-        <h3>Bienvenid@ {{ user.first_name }}</h3>
+        <h3>Bienvenid{% if user.profile.gender == 'male' %}o{% else %}a{% endif %} {{ user.first_name }}</h3>
         <div>
         </div>
     {% else %}

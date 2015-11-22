@@ -11,8 +11,17 @@ def create_profile(user, *args, **kwargs):
             profile.save()
 
 def save_profile(backend, user, response, *args, **kwargs):
-    import ipdb; ipdb.set_trace()
     if backend.name == 'facebook':
+        profile = user.profile
+        if response.get('gender') == 'мужской':
+            gender = 'male'
+        else:
+            gender = 'female'
+
+        profile.gender = gender
+        profile.save()
+
+    if backend.name == 'google-oauth2':
         profile = user.profile
         profile.gender = response.get('gender')
         profile.save()
