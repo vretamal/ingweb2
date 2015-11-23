@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.shortcuts import render, render_to_response
 from django.views import generic
 from django.template.context import RequestContext
