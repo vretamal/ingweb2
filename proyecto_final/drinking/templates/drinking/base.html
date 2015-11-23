@@ -20,8 +20,8 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/fontello-embedded.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/fontello-ie7.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/fontello-ie7-codes.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/extra.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/personal.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/extras.css" %}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -32,42 +32,55 @@
 
   <body>
 
-    <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-menu"></span>
-          </button>
-          <a class="navbar-brand" href="#">Drinking</a>
+    <div id="wrap">
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-menu"></span>
+            </button>
+            <a class="navbar-brand" href="#">Drinking</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {% if user.is_authenticated and not user.is_superuser %}
+                <li><a href="{% url 'auth:logout' %}?next={% url 'drinking:home' %}">Cerrar sesión</a></li>
+                <li><img class="img-circle img-profile"src="{{ user.profile.avatar }}"></li>
+              {% endif %}
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}">Home</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated and not user.is_superuser %}
-              <li><a href="{% url 'auth:logout' %}?next={% url 'drinking:home' %}">Cerrar sesión</a></li>
-              <li><img class="img-circle img-profile"src="{{ user.profile.avatar }}"></li>
+      </nav>
+
+
+      <div class="container">
+        {% if messages %}
+          {% for message in messages %}
+            {% if forloop.last %}
+              <p><i>{{ message }}</i></p>
             {% endif %}
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+          {% endfor %}
+        {% endif %}
+        {% block body%}
+        {% endblock body%}
+      </div> <!-- /container -->
+    </div>{# end wrapper #}
 
-
-    <div class="container">
-      {% if messages %}
-        {% for message in messages %}
-          {% if forloop.last %}
-            <p><i>{{ message }}</i></p>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">
+          {% if user.is_anonymous %}
+            ¿Eres administrador de local? Haz click <a href="{% url 'admin:index' %}">aquí</a> para iniciar sesión.
           {% endif %}
-        {% endfor %}
-      {% endif %}
-      {% block body%}
-      {% endblock body%}
-    </div> <!-- /container -->
+          <span class="pull-right">DrinKing {% now "Y" %}</span>
+        </p>
+      </div>
+    </footer>
 
 
     <!-- Bootstrap core JavaScript
