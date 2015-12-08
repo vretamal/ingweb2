@@ -17,5 +17,9 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.HomeView.as_view(), name='home'),
+    url(r'^$', 'drinking.views.home', name='home'), # root
+    url(r'^local_admin/$', 'drinking.views.localhome', name='local_admin'),
+    url(r'^test$', 'drinking.views.test', name='test_admin'),
+    url(r'^crear_Carta$', 'drinking.views.crearCarta', name='crearCarta'),
+    url(r'^anadirElementoCarta$', 'drinking.views.anadirElementoCarta', name='anadirElementoCarta'),
 ]

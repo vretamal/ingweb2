@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
+    'autofixture',
     'drinking'
 
 )
@@ -168,3 +169,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
+USER_ROLES = (
+    'admin',
+    'cliente',
+    'guardia'
+)
