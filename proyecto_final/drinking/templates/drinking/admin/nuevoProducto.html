@@ -1,0 +1,89 @@
+{% extends 'drinking/base.html' %}
+{% load static %}
+
+{% block title %}DrinKing - Nuevo ingrediente{% endblock title %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %}">{% endblock css %}
+
+{% block body %}
+<div class="row">
+    <div class="col-xs-12 col-lg-4">
+        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+            <h2>Nombre</h2>
+            <input class="form-control" type="text">
+        </div>
+        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+            <h2>Precio</h2>
+            <input class="form-control" type="number">
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 col-lg-8">
+    <h2>Ingredientes</h2>
+        <div class="form-group">
+            <select class="form-control" id="ingrediente" name="ingrediente">
+                <option selected>Elige un tipo de ingrediente</option>
+                {% for c in choices %}
+                <option id="ingrediente_marca" value="{{ c.0 }}">{{ c.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="ingredientes" class="col-xs-12 col-md-8 col-sm-8 checkbox">
+        </div>
+    </div>
+    <div class="pull-left col-xs-12 col-lg-4">
+    <table id="tabla_ing" style="display:none">
+        <thead>
+            <th>Producto</th>
+            <th></th>
+        </thead>
+        <tbody id="tbody_ing">
+        </tbody>
+    </table>
+        <button id="btn_anadir_ing" class="btn btn-success btn-block">Añadir ingrediente</button>
+    </div>
+</div>
+{% endblock body %}
+{% block script %}
+<script type="text/javascript">
+    $('#ingrediente').on('change', update);
+    $('#btn_anadir_ing').on('click', save);
+
+    function update(){
+        var id_ing = $(this).val();
+        $.ajax({
+            url: '../ing_ajax',
+            type: 'get',
+            data : { id_ing:id_ing },
+            success: function(data){
+                var html = ""
+                for(var i = 0; i< data.length ; i++){
+                    html += '<li id="ingrediente_producto" class="list-group-item"><label><input type="checkbox" value="'+data[i].fields.id+'">'+data[i].fields.marca+'</label></li>'
+                }
+                $('#ingredientes').html(html);
+            },
+            error: function(data){
+                console.log("ERROR")
+                console.log(data)
+            }
+        })
+        save();
+    }
+
+    function save(){
+        var html = ""
+        $('#ingredientes input[type="checkbox"]:checked').each(function(){
+            html += '<td>'+$(this).text()+'</td><td><button><i id="'+$(this).val()+'"class="icon-cancel-6"></i></button></td>'
+            return html;
+        });
+        console.log(html);
+        console.log("esto es una prueba");
+
+        $('#tbody_ing').html(html);
+        console.log("esto es otra prueba");
+        $('#tabla_ing').show();
+        console.log("Llegamos al final");
+        $('#tabla_ing').hide();
+    }
+</script>
+
+{% endblock script %}

@@ -11,12 +11,14 @@
          <h4>Mis locales guardados</h4>
         {% endif %}
     {% else %}
+    <div class="jumbotron text-center">
+
         <div>
             <a class="lang-logo">
                 <img src="/static/images/drinking-logo.png"></img>
             </a>
         </div>
-            <div class="omb_login">
+        <div class="omb_login">
         <h3 class="omb_authTitle">Ingresa a tu cuenta </h3>
         <div class="row omb_row-sm-offset-3 omb_socialButtons">
             <div class="col-xs-4 col-sm-2">
@@ -30,17 +32,18 @@
                     <i class="fa fa-twitter visible-xs"></i>
                     <span class="hidden-xs"><i class="icon-twitter"></i>Twitter</span>
                 </a>
-            </div>  
+            </div>
             <div class="col-xs-4 col-sm-2">
                 <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-lg btn-block omb_btn-google">
                     <i class="fa fa-google-plus visible-xs"></i>
                     <span class="hidden-xs"><i class="icon-google-1"></i>Google+</span>
                 </a>
-            </div>  
+            </div>
         </div>
 
 
-    
+
+    </div>
     </div>
     {% endif %}
 {% endblock body %}

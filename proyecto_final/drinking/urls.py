@@ -22,4 +22,6 @@ urlpatterns = [
     url(r'^test$', 'drinking.views.test', name='test_admin'),
     url(r'^crear_Carta$', 'drinking.views.crearCarta', name='crearCarta'),
     url(r'^anadirElementoCarta$', 'drinking.views.anadirElementoCarta', name='anadirElementoCarta'),
+    url(r'^nuevo_producto$', 'drinking.views.anadirProducto', name='nuevoProducto'),
+    url(r'^ing_ajax/$', 'drinking.views.anadirProducto_AJAX', name='anadirProducto_AJAX'),
 ]

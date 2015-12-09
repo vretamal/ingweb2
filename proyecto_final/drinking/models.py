@@ -4,18 +4,46 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 import re
 
+RON = 'RN'
+PISCO = 'PS'
+VOKDA = 'VK'
+GIN = 'GN'
+CERVEZA = 'CR'
+JUGO = 'JG'
+TEQUILA = 'TQ'
+BEBIDA = 'BB'
+WISKEY = 'WK'
+VINO = 'VN'
+AGUA_ARDIENTE = 'AA'
+
+TIPO_CHOICES = (
+    (RON, 'Ron'),
+    (PISCO, 'Pisco'),
+    (VOKDA, 'Vokda'),
+    (GIN, 'Gin'),
+    (CERVEZA, 'Cerveza'),
+    (JUGO, 'Jugo'),
+    (TEQUILA, 'Tequila'),
+    (BEBIDA, 'Bebida'),
+    (WISKEY, 'Wiskey'),
+    (VINO, 'Vino'),
+    (AGUA_ARDIENTE, 'Agua Ardiente'),
+)
 # Create your models here.
 ####    INGREDIENTES
 class Ingrediente(models.Model):
-    nombre = models.CharField(max_length = 30)
+
+    tipo = models.CharField(max_length = 15, choices=TIPO_CHOICES, default=RON)
     marca =  models.CharField(max_length = 20)
     descripcion = models.CharField(max_length = 100)
     class Meta:
         verbose_name = "Ingrediente"
         verbose_name_plural = "Ingredientes"
+        ordering = ['tipo']
+
 
     def __unicode__(self):
-        return "%s %s" % (self.nombre, self.marca)
+        return "%s %s" % (self.get_tipo_display(), self.marca)
 
 
 
@@ -70,7 +98,8 @@ class Local(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length = 30)
     ingredientes = models.ManyToManyField(Ingrediente)
-    local = models.ForeignKey(Local, null=True)
+    carta = models.ForeignKey(Local, null=True)
+    precio = models.IntegerField(default=1)
     class Meta:
         verbose_name = "Producto"
         verbose_name_plural = "Productos"
@@ -92,18 +121,18 @@ class Carta(models.Model):
 
 
 
-####    CARTAPRODUCTO
-class CartaProducto(models.Model):
-    precio = models.IntegerField(default=2)
-    carta = models.ForeignKey(Carta)
-    producto = models.ForeignKey(Producto)
+# ####    CARTAPRODUCTO
+# class CartaProducto(models.Model):
+#     precio = models.IntegerField(default=2)
+#     carta = models.ForeignKey(Carta)
+#     producto = models.ForeignKey(Producto)
 
-    class Meta:
-        verbose_name = "CartaProducto"
-        verbose_name_plural = "CartaProductos"
+#     class Meta:
+#         verbose_name = "CartaProducto"
+#         verbose_name_plural = "CartaProductos"
 
-    def __unicode__(self):
-        return "Carta: %s, Producto: %s" % (self.carta, self.producto.nombre)
+#     def __unicode__(self):
+#         return "Carta: %s, Producto: %s" % (self.carta, self.producto.nombre)
 
 
 

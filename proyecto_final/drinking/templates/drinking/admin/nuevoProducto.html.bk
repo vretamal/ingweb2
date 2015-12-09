@@ -1,0 +1,42 @@
+{% extends 'drinking/base.html' %}
+{% load static %}
+
+{% block title %}DrinKing - Nuevo ingrediente{% endblock title %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %}">{% endblock css %}
+
+{% block body %}
+<div class="row">
+    <div class="col-xs-12 col-lg-4">
+        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+            <h2>Nombre</h2>
+            <input class="form-control" type="text">
+        </div>
+        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+            <h2>Precio</h2>
+            <input class="form-control" type="number">
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 col-lg-8">
+    <h2>Ingredientes</h2>
+    {% for c in choices %}
+    <div class="col-xs-12 col-md-4 col-sm-6">
+        <div class="checkbox">
+            <ul class="list-group checked-list-box">
+    <li class="list-group-item"><b>{{c.1}}</b></li>
+        {% for i in ingredientes %}
+            {% if i.tipo == c.0 %}
+                <li class="list-group-item">
+                    <label>
+                        <input type="checkbox" value="{{i.id}}">
+                        {{ i.marca }}
+                    </label>
+                </li>
+            {% endif %}
+        {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock body %}

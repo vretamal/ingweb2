@@ -8,60 +8,59 @@
     {% if user.is_staff and local %}
         <h1>Administración de {{local.nombre | title}}</h1>
 
-{# DESCRIPCIÓN #}
-<div class="col-md-4 col-sm-4 col-xs-12 pull-right">
-    <h2>Descripción</h2>
-    {% if local.descripcion %}
-    <p><i>{{ local.descripcion }}</i></p>
-    <a href="#" class="btn btn-primary ">Modificar descripción</a>
-    {% else %}
-    <p>Aún no hay una descripción, ¿deseas añadirla?</p>
-    <a href="#" class="btn btn-primary ">Añadir descripción</a>
-    {% endif %}
-    <h4>Horario de atención</h4>
-    <p>Lunes:</p>
-    <p>Martes:</p>
-    <p>Miércoles:</p>
-    <p>Jueves:</p>
-    <p>Viernes:</p>
-    <p>Sábado:</p>
-    <p>Domingo:</p>
-</div>
-{# END DESCRIPCIÓN #}
+        {# DESCRIPCIÓN #}
+        <div class="col-md-4 col-sm-4 col-xs-12 pull-right">
+            <h2>Descripción</h2>
+            {% if local.descripcion %}
+            <p><i>{{ local.descripcion }}</i></p>
+            <a href="#" class="btn btn-primary ">Modificar descripción</a>
+            {% else %}
+            <p>Aún no hay una descripción, ¿deseas añadirla?</p>
+            <a href="#" class="btn btn-primary ">Añadir descripción</a>
+            {% endif %}
+            <h4>Horario de atención</h4>
+            <p>Lunes:</p>
+            <p>Martes:</p>
+            <p>Miércoles:</p>
+            <p>Jueves:</p>
+            <p>Viernes:</p>
+            <p>Sábado:</p>
+            <p>Domingo:</p>
+        </div>
+        {# END DESCRIPCIÓN #}
+        <div class="col-md-6 col-sm-8 col-xs-12">
+        {% if carta %}
+            <h2>Carta de {{ local.nombre | title }}</h2>
+            {% if carta.cartaproducto_set.all %}
 
-{# CARTA #}
+            <div id="carta">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for p in carta.cartaproducto_set.all %}
+                        <tr>
+                            <td>{{ p.producto.nombre }}</td>
+                            <td>{{ p.precio }}</td>
+                            <td><button class="btn btn-primary" id="p:{{p.id}}">Modificar</button></td>
+                            <td><button class="btn btn-danger" id="p:{{p.id}}">Eliminar</button></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
 
-    <div class="col-md-6 col-sm-8 col-xs-12">
-{% if carta %}
-    <h2>Carta de {{local.nombre | title}}</h2>
-    {% if carta.cartaproducto_set.all %}
-    <div class="table-responsive">
-
-        <table class="table ">
-            <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for elemento in carta.cartaproducto_set.all %}
-            <tr>
-                <td>{{elemento.producto.nombre}}</td>
-                <td>$ {{elemento.precio}}</td>
-                <td><a href="#" class="btn btn-primary">Modificar</a></td>
-                <td><a href="#" class="btn btn-primary">Eliminar</a></td>
-            </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-    </div>
-    {% else %}
-    <h4>Aún no hay productos para mostrar</h4>
-    {% endif %}
-    <button type="button" class="btn btn-default" id="anadir_elemento">Añadir elemento</button>
+            </div>
+            {% else %}
+            <h4>Aún no hay productos en la carta</h4>
+            {% endif %}
+            <button type="button" class="btn btn-default" id="anadir_elemento">Añadir elemento</button>
+        </div>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -74,11 +73,12 @@
                     <h4><span class="glyphicon icon-bar"></span> Añadir producto</h4>
                 </div>
                 <div class="modal-body" style="padding:40px 50px;">
-                    <form method="post" role="form" action="/anadirElementoCarta">
+                    <form id="form_anadir_elemento" method="post" role="form">
                     {% csrf_token %}
                         <div class="form-group">
                             <label for="precio">Producto</label>
                             <select class="form-control" id="producto" name="producto">
+                                <option>Elgie un producto</option>
                                 {% for producto in local.producto_set.all %}
                                 <option value="{{ producto.id }}">{{ producto.nombre }}</option>
                                 {% endfor %}
@@ -86,29 +86,23 @@
                         </div>
                         <div class="form-group">
                             <label for="precio">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="precio" placeholder="Ej: 4500"
-                            oninvalid="this.setCustomValidity('Ingresa un número entre el 1 y el 50000')"
-                            min="1"
-                            max="50000" />
+                            <input type="text" class="form-control" id="precio_form" name="precio" placeholder="Ej: 4500"/>
                         </div>
-                            <button type="submit" class="btn btn-success btn-block">Agregar Producto</button>
+                            <button type="submit" class="btn btn-success btn-block" onsubmit="return validateNewProduct()">Agregar Producto</button>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                    <p>¿No está en la lista? <a href="#">Añadir producto</a></p>
+                    <p>¿No está en la lista? <a href="{% url 'drinking:nuevoProducto' %}">Añadir producto</a></p>
                 </div>
             </div>
         </div>
     </div>
+        {% else %}
+        <a id="crearCarta" class="btn btn-primary" href="{% url 'drinking:crearCarta' %}">Crear Carta</a>
+        {% endif %}
 
 
-{% else %}
-    <h2>Aún no hay carta ):</h2>
-    <a href="/crear_Carta" class="btn btn-primary">Crear carta</a>
-{% endif %}
-{# END CARTA #}
-    </div>
     {% elif not local %}
         <h1>Aún no se te ha asignado un local, solamente te queda salir :(</h1>
         <a class="btn btn-danger" href="{% url 'auth:logout' %}?next={% url 'drinking:home' %}">Cerrar sesión</a>
@@ -125,10 +119,5 @@ $(document).ready(function(){
         $("#myModal").modal();
     });
 });
-
-$(document).ready(function() {
-    $('#html5Form').formValidation();
-});
 </script>
-
 {% endblock script %}

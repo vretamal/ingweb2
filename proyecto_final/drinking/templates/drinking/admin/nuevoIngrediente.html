@@ -1,0 +1,16 @@
+{% extends 'drinking/base.html' %}
+{% load static %}
+
+{% block title %}DrinKing - Nuevo ingrediente{% endblock title %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %}">{% endblock css %}
+
+{% block body %}
+<div class="checkbox">
+    {% for i in ingredientes %}
+    <label>
+        <input type="checkbox" value="{{i.id}}">
+        {{ i.nombre }}
+    </label>
+    {% endfor %}
+</div>
+{% endblock css %}
