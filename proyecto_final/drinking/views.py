@@ -114,7 +114,6 @@ def anadirProducto(request):
                   'ingredientes' : ingredientes, 'choices' : TIPO_CHOICES})
 
 def anadirProducto_AJAX(request):
-    print "algo"
     local = request.user.admin.local
     carta = Carta.objects.get(local = local)
     id_ing = request.GET['id_ing']
@@ -128,13 +127,15 @@ def anadirProducto_AJAX(request):
     #               'ingredientes' : ingredientes, 'choices' : TIPO_CHOICES})
 
 def crearProducto_AJAX(request):
-    print "entré a la función"
     local = request.user.admin.local
-    ingredientes = request.GET['ingredientes[]']
+    ingredientes = request.GET.getlist('ingredientes[]')
     nombre = request.GET['nombre']
     precio = request.GET['precio']
-    print ', '.join(ingredientes)
-    if ingredientes is None:
-        return HttpResponse(status=400) ## or some error.
-    data = "LA FUNCION FUNCIONA"
+    producto = Producto(nombre = nombre, precio = precio, local = local)
+    producto.save()
+    for i in ingredientes:
+        ing = Ingrediente.objects.get(pk=i)
+        producto.ingredientes.add(ing)
+        producto.save()
+    data = "El producto ha sido creado con éxito"
     return HttpResponse(data, content_type='text/plain')
