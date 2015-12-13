@@ -128,14 +128,19 @@ def anadirProducto_AJAX(request):
 
 def crearProducto_AJAX(request):
     local = request.user.admin.local
+    carta = Carta.objects.get(local = local)
     ingredientes = request.GET.getlist('ingredientes[]')
     nombre = request.GET['nombre']
     precio = request.GET['precio']
-    producto = Producto(nombre = nombre, precio = precio, local = local)
+    producto = Producto(nombre = nombre, precio = precio, carta = carta)
+    print "Guardé el producto"
     producto.save()
+    print "Guardé el producto"
     for i in ingredientes:
         ing = Ingrediente.objects.get(pk=i)
         producto.ingredientes.add(ing)
+        print "Añadi el ingrediente"
         producto.save()
+        print "guardé el producto en el for"
     data = "El producto ha sido creado con éxito"
     return HttpResponse(data, content_type='text/plain')

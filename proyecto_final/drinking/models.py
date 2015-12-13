@@ -94,19 +94,6 @@ class Local(models.Model):
     def get_descripcion(self):
         return self.descripcion
 
-####    PRODUCTO
-class Producto(models.Model):
-    nombre = models.CharField(max_length = 30)
-    ingredientes = models.ManyToManyField(Ingrediente)
-    local = models.ForeignKey(Local, null=True)
-    precio = models.IntegerField(default=0)
-    class Meta:
-        verbose_name = "Producto"
-        verbose_name_plural = "Productos"
-
-    def __unicode__(self):
-        return self.nombre
-
 
 ####    CARTA
 class Carta(models.Model):
@@ -119,6 +106,19 @@ class Carta(models.Model):
     def __unicode__(self):
         return "Carta de " + self.local.nombre
 
+
+####    PRODUCTO
+class Producto(models.Model):
+    nombre = models.CharField(max_length = 30)
+    ingredientes = models.ManyToManyField(Ingrediente)
+    carta = models.ForeignKey(Carta, null=True)
+    precio = models.IntegerField(default=0)
+    class Meta:
+        verbose_name = "Producto"
+        verbose_name_plural = "Productos"
+
+    def __unicode__(self):
+        return self.nombre
 
 
 # ####    CARTAPRODUCTO
