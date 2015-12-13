@@ -1,4 +1,4 @@
-{% extends 'drinking/base.html' %}
+{% extends 'drinking/admin/admin.html' %}
 {% load static %}
 
 {% block title %}DrinKing - Nuevo ingrediente{% endblock title %}
@@ -9,11 +9,11 @@
     <div class="col-xs-12 col-lg-4">
         <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
             <h2>Nombre</h2>
-            <input id="nombre_producto"class="form-control" type="text">
+            <input id="nombre_producto" required class="form-control" type="text">
         </div>
         <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
             <h2>Precio</h2>
-            <input id="precio_producto" class="form-control" type="number">
+            <input id="precio_producto" required class="form-control" type="number">
         </div>
         <span id="tabla_ing" style="display:none">
             <table class="table">
@@ -32,7 +32,7 @@
         <h2>Ingredientes</h2>
         <div class="form-group">
             <select class="form-control" id="ingrediente" name="ingrediente">
-                <option selected>Elige un tipo de ingrediente</option>
+                <option id="default" selected value="default">Elige un tipo de ingrediente</option>
                 {% for c in choices %}
                 <option id="ingrediente_tipo" value="{{ c.0 }}">{{ c.1 }}</option>
                 {% endfor %}
@@ -66,6 +66,7 @@
                     html += '<li id="ingrediente_producto" class="list-group-item"><label><input  name="ingrediente_producto" id="'+data[i].fields.marca+'" type="checkbox" value="'+data[i].pk+'">'+data[i].fields.marca+'</label></li>'
                 }
                 $('#ingredientes').html(html);
+                $('#ingredientes').show();
             },
             error: function(data){
                 console.log("ERROR")
@@ -90,6 +91,9 @@
 
         $('#tbody_ing').html(html);
         $('#tabla_ing').show();
+        $('#ingrediente').val("default");
+        $('#ingredientes').hide();
+
     }
 
     function removeRow(id){
@@ -106,10 +110,22 @@
         });
         var nombre = $('#nombre_producto').val();
         var precio = $('#precio_producto').val();
-        console.log('id_ing: '+id_ing);
+        console.log('id_ing: '+id_ing.length);
         console.log('nombre: '+nombre);
         console.log('precio: '+precio);
-
+        if (nombre == null || nombre == "" || precio == null || precio == ""){
+            alert("Por favor llene todos los campos");
+            return false;
+        } else if (isNumeric(precio) && precio <= 0){
+            alert("El precio debe ser un número positivo");
+            return false;
+        } else if (!isNumeric(precio)){
+            alert("El precio debe ser un número");
+            return false;
+        } else if (id_ing.length == 0){
+            alert("Debe seleccionar por lo menos un producto");
+            return false;
+        }
         $.ajax({
             url: '../crearProducto_ajax',
             type: 'get',

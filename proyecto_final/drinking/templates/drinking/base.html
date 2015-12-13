@@ -20,7 +20,6 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/fontello-embedded.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/fontello-ie7.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/fontello-ie7-codes.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/personal.css" %}">
     {% block css %}{% endblock css %}
     <link rel="stylesheet" type="text/css" href="{% static "css/extras.css" %}">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -46,7 +45,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+              {% block nav %}{% endblock nav %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if user.is_authenticated %}

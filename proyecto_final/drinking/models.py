@@ -112,6 +112,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length = 30)
     ingredientes = models.ManyToManyField(Ingrediente)
     carta = models.ForeignKey(Carta, null=True)
+    local = models.ForeignKey(Local, null=True)
     precio = models.IntegerField(default=0)
     class Meta:
         verbose_name = "Producto"

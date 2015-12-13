@@ -1,9 +1,7 @@
-{% extends 'drinking/base.html' %}
+{% extends 'drinking/admin/admin.html' %}
 {% load static %}
 
 {% block title %}DrinKing - Administración de local{% endblock title %}
-{% block css %}<link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %}">{% endblock css %}
-
 {% block body %}
     {% if user.is_staff and local %}
         <h1>Administración de {{local.nombre | title}}</h1>
@@ -31,7 +29,7 @@
         <div class="col-md-6 col-sm-8 col-xs-12">
         {% if carta %}
             <h2>Carta de {{ local.nombre | title }}</h2>
-            {% if carta.cartaproducto_set.all %}
+            {% if carta.producto_set.all %}
 
             <div id="carta">
                 <table class="table table-responsive">
@@ -44,12 +42,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for p in carta.cartaproducto_set.all %}
+                    {% for p in carta.producto_set.all %}
                         <tr>
-                            <td>{{ p.producto.nombre }}</td>
-                            <td>{{ p.precio }}</td>
+                            <td>{{ p.nombre | title }}</td>
+                            <td>${{ p.precio }}</td>
                             <td><button class="btn btn-primary" id="p:{{p.id}}">Modificar</button></td>
-                            <td><button class="btn btn-danger" id="p:{{p.id}}">Eliminar</button></td>
+                            <td><button class="btn btn-danger" onclick="eliminarProducto({{p.id}})" id="p:{{p.id}}">Eliminar</button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -114,10 +112,29 @@
 
 {% block script %}
 <script>
-$(document).ready(function(){
-    $("#anadir_elemento").click(function(){
-        $("#myModal").modal();
+    $(document).ready(function(){
+        $("#anadir_elemento").click(function(){
+            $("#myModal").modal();
+        });
     });
-});
+    function eliminarProducto(id){
+        console.log('id: '+id);
+
+        $.ajax({
+            url: '..{% url 'drinking:eliminarElementoCarta' %}',
+            type: 'get',
+            data : { 'id':id },
+            success: function(data){
+                alert(data);
+                $('#p:'+id).remove();
+                /*window.location.href = "../local_admin";*/
+
+            },
+            error: function(data){
+                console.log("ERROR")
+                console.log(data)
+            }
+        })
+    }
 </script>
 {% endblock script %}

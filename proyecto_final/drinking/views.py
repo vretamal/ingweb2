@@ -132,15 +132,29 @@ def crearProducto_AJAX(request):
     ingredientes = request.GET.getlist('ingredientes[]')
     nombre = request.GET['nombre']
     precio = request.GET['precio']
-    producto = Producto(nombre = nombre, precio = precio, carta = carta)
-    print "Guardé el producto"
+    producto = Producto(nombre = nombre, precio = precio, carta = carta, local = local)
     producto.save()
-    print "Guardé el producto"
     for i in ingredientes:
         ing = Ingrediente.objects.get(pk=i)
         producto.ingredientes.add(ing)
-        print "Añadi el ingrediente"
         producto.save()
-        print "guardé el producto en el for"
     data = "El producto ha sido creado con éxito"
+    return HttpResponse(data, content_type='text/plain')
+
+def eliminarElementoCarta(request):
+    print "Entré a la función eliminarElementoCarta"
+    local = request.user.admin.local
+    print "Asigne el local"
+    p_id = request.GET['id']
+    print "Obtuve el id "+p_id
+    try:
+        producto = Producto.objects.get(pk=p_id)
+        print "Obtuve el producto con id "+p_id
+        producto.carta = None
+        print "Eliminé el producto de la carta"
+        producto.save()
+        print "Eliminé el producto de la carta"
+        data = "El producto ha sido borrado con éxito"
+    except:
+        data = "No ha sido posible eliminar el producto"
     return HttpResponse(data, content_type='text/plain')

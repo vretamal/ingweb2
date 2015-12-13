@@ -1,0 +1,10 @@
+{% extends 'drinking/base.html' %}
+{% load static %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %}">{% endblock css %}
+
+{% block nav %}
+<li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+<li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}"><span class="glyphicon glyphicon-home"></span> Local</a></li>
+<li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}"><span class="glyphicon glyphicon-home"></span> Productos</a></li>
+<li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}"><span class="glyphicon glyphicon-home"></span> Noticias</a></li>
+{% endblock nav %}

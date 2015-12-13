@@ -1,0 +1,8 @@
+{% extends 'drinking/base.html' %}
+{% load static %}
+
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static "css/personal.css" %}">{% endblock css %}
+
+{% block nav %}
+<li class="{% if "/" == request.path %}active{% endif %}"><a href="{% url 'drinking:home' %}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+{% endblock nav %}
