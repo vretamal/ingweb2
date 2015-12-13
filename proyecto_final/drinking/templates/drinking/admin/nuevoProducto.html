@@ -15,38 +15,44 @@
             <h2>Precio</h2>
             <input class="form-control" type="number">
         </div>
+        <span id="tabla_ing" style="display:none">
+            <table class="table">
+                <thead>
+                    <th>Producto</th>
+                    <th></th>
+                </thead>
+                <tbody id="tbody_ing">
+                </tbody>
+            </table>
+            <button id="btn-crearProducto" class="btn btn-success btn-block">Guardar producto</button>
+        </span>
     </div>
-    <div class="col-xs-12 col-md-12 col-lg-8">
-    <h2>Ingredientes</h2>
+
+    <div class="col-xs-12 col-md-12 col-lg-4">
+        <h2>Ingredientes</h2>
         <div class="form-group">
             <select class="form-control" id="ingrediente" name="ingrediente">
                 <option selected>Elige un tipo de ingrediente</option>
                 {% for c in choices %}
-                <option id="ingrediente_marca" value="{{ c.0 }}">{{ c.1 }}</option>
+                <option id="ingrediente_tipo" value="{{ c.0 }}">{{ c.1 }}</option>
                 {% endfor %}
             </select>
         </div>
 
-        <div id="ingredientes" class="col-xs-12 col-md-8 col-sm-8 checkbox">
+        <div id="ingredientes" class="checkbox">
         </div>
-    </div>
-    <div class="pull-left col-xs-12 col-lg-4">
-    <table id="tabla_ing" style="display:none">
-        <thead>
-            <th>Producto</th>
-            <th></th>
-        </thead>
-        <tbody id="tbody_ing">
-        </tbody>
-    </table>
         <button id="btn_anadir_ing" class="btn btn-success btn-block">Añadir ingrediente</button>
     </div>
+
 </div>
 {% endblock body %}
 {% block script %}
 <script type="text/javascript">
     $('#ingrediente').on('change', update);
     $('#btn_anadir_ing').on('click', save);
+    $('#btn-crearProducto').on('click', crearProducto);
+
+
 
     function update(){
         var id_ing = $(this).val();
@@ -57,7 +63,7 @@
             success: function(data){
                 var html = ""
                 for(var i = 0; i< data.length ; i++){
-                    html += '<li id="ingrediente_producto" class="list-group-item"><label><input type="checkbox" value="'+data[i].fields.id+'">'+data[i].fields.marca+'</label></li>'
+                    html += '<li id="ingrediente_producto" class="list-group-item"><label><input  name="ingrediente_producto" id="'+data[i].fields.marca+'" type="checkbox" value="'+data[i].pk+'">'+data[i].fields.marca+'</label></li>'
                 }
                 $('#ingredientes').html(html);
             },
@@ -66,24 +72,57 @@
                 console.log(data)
             }
         })
-        save();
     }
+
 
     function save(){
-        var html = ""
-        $('#ingredientes input[type="checkbox"]:checked').each(function(){
-            html += '<td>'+$(this).text()+'</td><td><button><i id="'+$(this).val()+'"class="icon-cancel-6"></i></button></td>'
+        var checkValues = $('input[name=ingrediente_producto]:checked').map(function()
+        {
+            return $(this).val();
+        }).get();
+
+        var html = $('#tbody_ing').html();
+        $('input[name=ingrediente_producto]:checked').each(function(){
+
+            html +='<tr id="'+$(this).val()+'"><td>'+$(this).attr('id')+'</td><td><button onclick="removeRow('+$(this).val()+')" class="btn btn-danger" id="'+$(this).val()+'"><i class="icon-cancel-6"></i>Eliminar</button></td></tr>\n'
             return html;
         });
-        console.log(html);
-        console.log("esto es una prueba");
 
         $('#tbody_ing').html(html);
-        console.log("esto es otra prueba");
         $('#tabla_ing').show();
-        console.log("Llegamos al final");
-        $('#tabla_ing').hide();
     }
+
+    function removeRow(id){
+        $('#'+id+'-row').remove();
+    }
+
+
+    function crearProducto(){
+        var i = 0;
+        var id_ing = [];
+        $('#tbody_ing > tr').each(function(){
+            id_ing[i] = $(this).attr('id');
+            i++;
+        });
+        console.log(id_ing);
+
+        $.ajax({
+            url: '../crearProducto_ajax',
+            type: 'get',
+            data : { 'ingredientes[]':id_ing },
+            success: function(data){
+                var html = ""
+                $('#ingredientes').html(html);
+                console.log(data)
+            },
+            error: function(data){
+                console.log("ERROR")
+                console.log(data)
+            }
+        })
+}
 </script>
 
 {% endblock script %}
+
+

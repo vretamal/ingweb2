@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <label for="precio">Producto</label>
                             <select class="form-control" id="producto" name="producto">
-                                <option>Elgie un producto</option>
+                                <option>Elige un producto</option>
                                 {% for producto in local.producto_set.all %}
                                 <option value="{{ producto.id }}">{{ producto.nombre }}</option>
                                 {% endfor %}

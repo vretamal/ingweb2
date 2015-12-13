@@ -47,3 +47,8 @@
     </div>
     {% endif %}
 {% endblock body %}
+{% block admin-login %}
+        {% if user.is_staff and 'admin' not in request.path %}
+            ¿Eres administrador de local? Haz click <a href="{% url 'drinking:local_admin' %}">aquí</a> para iniciar sesión.
+        {% endif %}
+{% endblock admin-login %}

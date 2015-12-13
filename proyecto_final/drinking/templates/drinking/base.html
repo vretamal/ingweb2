@@ -79,9 +79,7 @@
     <footer class="footer">
       <div class="container">
         <p class="text-muted">
-          {% if user.is_staff and 'admin' not in request.path %}
-            ¿Eres administrador de local? Haz click <a href="{% url 'drinking:local_admin' %}">aquí</a> para iniciar sesión.
-          {% endif %}
+          {% block admin-login %}{% endblock admin-login %}
           <span class="pull-right">DrinKing {% now "Y" %}</span>
         </p>
       </div>

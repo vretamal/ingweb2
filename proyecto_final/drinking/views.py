@@ -114,14 +114,27 @@ def anadirProducto(request):
                   'ingredientes' : ingredientes, 'choices' : TIPO_CHOICES})
 
 def anadirProducto_AJAX(request):
+    print "algo"
     local = request.user.admin.local
     carta = Carta.objects.get(local = local)
     id_ing = request.GET['id_ing']
     ingredientes = Ingrediente.objects.filter(tipo = id_ing)
-    data = serializers.serialize('json', ingredientes, fields=('marca', 'id'))
+    data = serializers.serialize('json', ingredientes, fields=('marca', 'pk'))
 
     return HttpResponse(data, content_type='application/json')
 
     # return render(request, 'drinking/admin/nuevoProducto.html',
     #               {'local' : local, 'carta' : carta,
     #               'ingredientes' : ingredientes, 'choices' : TIPO_CHOICES})
+
+def crearProducto_AJAX(request):
+    print "entré a la función"
+    local = request.user.admin.local
+    ingredientes = request.GET['ingredientes[]']
+    nombre = request.GET['nombre']
+    precio = request.GET['precio']
+    print ', '.join(ingredientes)
+    if ingredientes is None:
+        return HttpResponse(status=400) ## or some error.
+    data = "LA FUNCION FUNCIONA"
+    return HttpResponse(data, content_type='text/plain')
